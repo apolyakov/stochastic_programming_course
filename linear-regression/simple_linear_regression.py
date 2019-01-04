@@ -14,7 +14,8 @@ def find_coefficients(x, y):
     return np.linalg.pinv(x_transposed.dot(x)).dot(x_transposed).dot(y)
 
 if __name__ == '__main__':
-    data = np.loadtxt('task_1_capital.txt', delimiter='\t\t', skiprows=1)
+    input_file = 'input.txt'
+    data = np.loadtxt(input_file, delimiter='\t\t', skiprows=1)
 
     b, k = find_coefficients(data[:, 0], data[:, 1])
     f = f_x(k, b)

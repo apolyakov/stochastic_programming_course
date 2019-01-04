@@ -95,7 +95,8 @@ if __name__ == '__main__':
     clusters_range = range(2, 10)
 
     # Inner criterias' block.
-    image = np.array(Image.open(os.path.join(data_dir, 'policemen.jpg')), dtype=np.uint8)
+    image_path = os.path.join(data_dir, 'policemen.jpg')
+    image = np.array(Image.open(image_path), dtype=np.uint8)
     new_image = image.reshape(image.shape[0] * image.shape[1], image.shape[2])
     db, best_db, ch, best_ch = inner_criterias(new_image, clusters_range)
     best_inner = (best_db + best_ch) // 2
@@ -106,7 +107,8 @@ if __name__ == '__main__':
     Image.fromarray(new_image).save(os.path.join(results_dir, '%d-clusters-policemen.jpg' % best_inner))
 
     # Outer criterias' block.
-    data = np.loadtxt(os.path.join(data_dir, 'task_2_data_7.txt'), delimiter=' ')
+    outer_criterias_input = os.path.join(data_dir, 'outer_criterias_input.txt')
+    data = np.loadtxt(outer_criterias_input, delimiter=' ')
     reference, points = data[:, 0], data[:, 1:]
     rs, best_rs, fm, best_fm = outer_criterias(points, clusters_range, reference)
 

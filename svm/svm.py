@@ -64,6 +64,7 @@ def classify(objects, classes):
 
 
 if __name__ == '__main__':
-    data = np.loadtxt('chips.txt', delimiter=',')
+    input_file = 'chips.txt'
+    data = np.loadtxt(input_file, delimiter=',')
     objects, classes = data[:, :2], data[:, 2]
     classify(objects, classes)
