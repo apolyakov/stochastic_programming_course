@@ -12,14 +12,17 @@ def DaviesBouldin(X, centroids, clusters):
     n_cluster = len(centroids)
     cluster_k = [X[clusters == k] for k in range(n_cluster)]
     variances = [np.mean([np.linalg.norm(p - centroids[i]) for p in k]) for i, k in enumerate(cluster_k)]
-    db = []
+    db = np.empty(shape=(n_cluster, n_cluster))
 
     for i in range(n_cluster):
         for j in range(n_cluster):
             if i != j:
-                db.append((variances[i] + variances[j]) / np.linalg.norm(centroids[i] - centroids[j]))
+                db[i][j] = (variances[i] + variances[j]) / np.linalg.norm(centroids[i] - centroids[j])
 
-    return np.max(db) / n_cluster
+    for i in range(n_cluster):
+        db[i][i] = -1
+
+    return np.sum(np.max(db, axis=1)) / n_cluster
 
 
 def CHIndex(X, centroids, clusters):
@@ -44,7 +47,7 @@ def inner_criterias(X, k_range, iterations=200):
 
     ch_list = list(CH.items())
 
-    db_best = max(DB, key=DB.get)
+    db_best = min(DB, key=DB.get)
     ch_best = 0
     delta = sys.maxsize
     for k in range(1, len(CH) - 1):
@@ -87,6 +90,7 @@ def outer_criterias(X, k_range, reference, iterations=200):
     best_fm = max(FM, key=FM.get)
 
     return RS, best_rs, FM, best_fm
+
 
 if __name__ == '__main__':
     data_dir = 'data'
