@@ -34,7 +34,7 @@ def CHIndex(X, centroids, clusters):
     return (n - k) * B / ((k - 1) * W)
 
 
-def inner_criterias(X, k_range, iterations=200):
+def inner_criteria(X, k_range, iterations=200):
     DB = dict()  # Davies-Bouldin
     CH = dict()  # Calinski-Harabasz
 
@@ -59,7 +59,7 @@ def inner_criterias(X, k_range, iterations=200):
     return DB, db_best, CH, ch_best
 
 
-def outer_criterias(X, k_range, reference, iterations=200):
+def outer_criteria(X, k_range, reference, iterations=200):
     n = len(X)
     RS = dict()  # Rand Statistic
     FM = dict()  # Fowlkes-Mallows
@@ -102,7 +102,7 @@ if __name__ == '__main__':
     image_path = os.path.join(data_dir, 'policemen.jpg')
     image = np.array(Image.open(image_path), dtype=np.uint8)
     new_image = image.reshape(image.shape[0] * image.shape[1], image.shape[2])
-    db, best_db, ch, best_ch = inner_criterias(new_image, clusters_range)
+    db, best_db, ch, best_ch = inner_criteria(new_image, clusters_range)
     best_inner = (best_db + best_ch) // 2
 
     # Save the clustered image.
@@ -114,7 +114,7 @@ if __name__ == '__main__':
     outer_criterias_input = os.path.join(data_dir, 'outer_criterias_input.txt')
     data = np.loadtxt(outer_criterias_input, delimiter=' ')
     reference, points = data[:, 0], data[:, 1:]
-    rs, best_rs, fm, best_fm = outer_criterias(points, clusters_range, reference)
+    rs, best_rs, fm, best_fm = outer_criteria(points, clusters_range, reference)
 
     # Draw the results.
     fig, ax = plt.subplots(nrows=2, ncols=2)
